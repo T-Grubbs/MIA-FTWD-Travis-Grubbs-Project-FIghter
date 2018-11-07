@@ -1,0 +1,73 @@
+* {
+    font-family: 'Permanent Marker', cursive;
+    background-position: cover;
+    background-repeat: no-repeat;
+    
+}
+
+
+
+.game-header {
+    background-image: url('./images/Ryu-background.jpg');
+    
+    padding: 0px 0px 0px 0px;
+}
+
+
+
+
+#start-button {
+    background-color: transparent;
+    border-color: transparent;
+
+    
+    
+    
+}
+.logo-img {
+    width: 350px;
+  }
+
+
+  ctx.strokeText {
+      color: white;
+    
+    }
+
+
+
+
+#stage {
+    
+    padding: 40px 100px 0 118px;
+    background: url(./images/Ryu-stage.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    justify-content: center;
+    width: 78vw;
+    height: 126vh;
+    margin: 20px;
+}
+    
+
+
+hr {
+    width: 75vw;
+    height: 4px;
+    color: red;
+    border-bottom-color: rgb(250, 225, 3);
+    background-color: transparent;
+  }
+
+
+
+  .canvas-div{
+      
+
+
+  }
+
+  canvas{
+      
+      background-color: transparent;
+  }
