@@ -15,7 +15,6 @@ class Game {
     this.cpu = new Cpu()
     this.energy = 8;
     this.cpuEnergy = 8;
-    //this.life = new Life()
     this.player.move()
 
 
@@ -23,7 +22,7 @@ class Game {
 
 
     setInterval(() => {
-   
+
       this.player.move();
       this.drawEverything();
       this.player.collision();
@@ -31,64 +30,64 @@ class Game {
 
     }, 60)
   }
-       
+
 
   drawEverything() {
     this.ctx.clearRect(0, 0, 800, 900);
-    setTimeout(()=>{
+    setTimeout(() => {
 
-        this.cpu.randomMove()
+      this.cpu.randomMove()
     }, 1000)
 
 
     this.player.draw();
     this.cpu.draw();
 
-    for(let k = 0; k < this.energy; k++){
-        
+    for (let k = 0; k < this.energy; k++) {
 
-        let theImage = new Image();
-        theImage.src = 'images/Ryu-weak-hadoken.png'
-        
-        theImage.onload = () => {
-          this.ctx.drawImage(theImage, k * 20, 20, 20, 20);
-        }     
-    
 
-        
-    }
-    
-    for(let kk = 0; kk < this.cpuEnergy; kk++){
-        
-        let theImage = new Image();
-        theImage.src = 'images/Ryu-weak-hadoken.png'
+      let theImage = new Image();
+      theImage.src = 'images/Ryu-weak-hadoken.png'
 
-        theImage.onload = () => {
-          this.ctx.drawImage(theImage, kk * 20, 70, 20, 20);
+      theImage.onload = () => {
+        this.ctx.drawImage(theImage, k * 20, 20, 20, 20);
+      }
+
+
 
     }
 
+    for (let kk = 0; kk < this.cpuEnergy; kk++) {
 
-    
+      let theImage = new Image();
+      theImage.src = 'images/Ryu-weak-hadoken.png'
+
+      theImage.onload = () => {
+        this.ctx.drawImage(theImage, kk * 20, 70, 20, 20);
+
+      }
+
+
+
+    }
   }
-}
 
 }
 
 document.getElementById("start-button").onclick = function () {
-    
-    setTimeout(()=>{
-        
-        fight.play()
-        stageMusic.play()
-        theGame = new Game();
-        anotherPlayer = new Player();
-        anotherPlayer.draw();
-        spawnCpu = new Cpu();
-        spawnCpu.draw()
-        
-    }, 1000)
-   
+
+  setTimeout(() => {
+
+    fight.play()
+    stageMusic.play()
+    theGame = new Game();
+    anotherPlayer = new Player();
+    anotherPlayer.draw();
+    spawnCpu = new Cpu();
+    spawnCpu.draw()
+
+  }, 1000)
+
 };
 
 
@@ -103,68 +102,59 @@ class Player {
 
   }
 
-//   collision(){
-//     if (this.x > theGame.cpu.x) {
-//         alert("AHHH")
-//         this.x -= 100;
-//         theGame.cpu.x += 100;
-
-//       }
-//   }
-
-
 
   draw() {
-      
-
 
     if (keyCommands.includes(' ')) {
+
       this.imgsrc = 'images/Ryu-hadoken-cockback.png'
       this.height = 240;
-
       keyCommands.push('attack')
+
       setTimeout(() => {
+
         this.imgsrc = 'images/Ryu-hadoken.png'
         this.x += 4;
-        this.width =115;
-        // this.width +=5;        
+        this.width = 115;
+
       }, 100)
+
       setTimeout(() => {
 
         if (this.x + this.width > theGame.cpu.x) {
+
           this.x -= 5;
-
-
-
           theGame.cpu.x += 50;
-
-
-
           theGame.cpu.imgsrc = 'images/Evil-Ryu-getting.png'
           theGame.cpuEnergy--
           punch.play()
 
-          if(theGame.cpu.imgsrc = 'images/Evil-Ryu-getting.png'){
+          if (theGame.cpu.imgsrc = 'images/Evil-Ryu-getting.png') {
 
-              setTimeout(()=>{
-                  theGame.cpu.imgsrc = 'images/Evil-Ryu-cropped.png'
+            setTimeout(() => {
 
-              }, 150)
+              theGame.cpu.imgsrc = 'images/Evil-Ryu-cropped.png'
+
+            }, 150)
           }
-          if(theGame.cpuEnergy === 0){
-              ryuEnding.play()
-              stageMusic.pause()
-              setTimeout(()=> {
-                  alert('   SHORYUKEN!!!!!!!')
 
-              }, 500)
-            
-        }
-           
-        //   console.log('OW')
-          //result = false;
+          if (theGame.cpuEnergy === 0) {
+
+            ryuEnding.play()
+            stageMusic.pause()
+
+            setTimeout(() => {
+
+              alert('   SHORYUKEN!!!!!!!')
+
+            }, 500)
+          }
         }
       }, 200)
+
+
+
+
       setTimeout(() => {
 
         this.imgsrc = 'images/Ryu_492.png'
@@ -172,9 +162,9 @@ class Player {
         this.width = 85;
 
       }, 200)
-
-
     }
+
+
 
 
     let theImage = new Image();
@@ -188,12 +178,8 @@ class Player {
   move() {
 
     this.canMove(this.x, this.y)
-
     if (keyCommands.includes("ArrowLeft")) {
-
       if (this.canMove(this.x - 20, this.y)) {
-
-       
 
         this.x -= 20;
       }
@@ -202,78 +188,67 @@ class Player {
     if (keyCommands.includes("ArrowRight")) {
       if (this.canMove(this.x + 20, this.y)) {
         this.x += 20;
-        // console.log(this.x)
+
       }
     }
   }
 
-  canMove(futureX, futureY) {
+  canMove(futureX) {
+
     let result = true;
 
     if (futureX < 0 || futureX > 790) {
 
       result = false;
     }
-
-
     return result;
   }
-
 }
-
-
-
 
 class Cpu {
   constructor() {
+
     this.x = 445;
     this.y = 210;
     this.width = 65;
     this.height = 220;
     this.imgsrc = 'images/Evil-Ryu-cropped.png'
     this.ctx = document.getElementById('stage').getContext('2d');
-
     this.movesList = ["moveLeft", "moveRight", "moveLeft", "attack"]
-
   }
 
-
   draw() {
+
     let theImage = new Image();
     theImage.src = this.imgsrc;
     theImage.onload = () => {
-     newChallenger.play()   
-    this.ctx.drawImage(theImage, this.x, this.y, this.width, this.height);
+      newChallenger.play()
+      this.ctx.drawImage(theImage, this.x, this.y, this.width, this.height);
     }
     return this;
   }
 
   move() {
     this.canMove(this.x, this.y)
-
   }
 
   canMove(futureX) {
+
     let result = true;
     if (futureX < theGame.player.x || futureX > 800) {
-       // theGame.player.x += 50;
 
       result = false;
     }
-
-  
-
   }
 
-  collision(){
-    //   console.log('=-=-=-=-=-=-',this.x)
-    //   console.log(theGame.player.x + theGame.player.width)
-    if (this.x < theGame.player.x + 75) {
-        // alert("AHHH")
-        this.x += 50;
-        theGame.player.x -= 50;
+  collision() {
 
-      }
+    if (this.x < theGame.player.x + 75) {
+
+      this.x += 50;
+      theGame.player.x -= 50;
+
+    }
   }
 
   randomMove() {
@@ -283,125 +258,70 @@ class Cpu {
     if (random === 2) {
 
       if (this.movesList[ii] === 'moveRight') {
-        //   console.log('Move Right')
-        //   console.log(this.x)
-          this.x += 20;
+
+        this.x += 20;
       }
-      if(this.x > 450){
-          this.x -92;
+      if (this.x > 450) {
+
+        this.x - 92;
       }
 
 
       if (this.movesList[ii] === 'moveLeft') {
-        // console.log('Move Left')
-        // console.log(this.x)
+
         this.x -= 20;
-
-        }
-
-      }
-
-
-      if (this.movesList[ii] === 'attack') {
-        // console.log('Attack')
-        this.width = 100;
-        this.x -3;
-        this.imgsrc = 'images/Evil-Ryu-cockback.png';
-        
-
-
-
-
-
-
-        setTimeout(() => {
-          this.imgsrc = 'images/Evil-Ryu-punch.png'
-          this.width = 100;
-        }, 100)
-
-
-        setTimeout(() => {
-
-          if (this.x - this.width < theGame.player.x) {
-            this.x -= 5;
-            theGame.player.x -= 50;
-            theGame.player.imgsrc = 'images/Ryu-getting-hit.png'
-            theGame.energy--
-            punch.play()
-            if(theGame.energy === 0){
-                gameOver.play()
-                stageMusic.pause()
-                alert('             GAME OVER!!!\n              EVIL RYU WINS!!!!!\n         YOU NEED TO WORK ON YOUR HADO \n press ok to train.');
-                theGame.drawEverything().newGame()
-            }
-
-           
-            if (theGame.player.imgsrc = 'images/Ryu-getting-hit.png') {
-              setTimeout(() => {
-                theGame.player.imgsrc = 'images/Ryu_492.png'
-              }, 100)
-            }
-            
-          }
-        }, 200)
-
-
-        setTimeout(() => {
-          this.imgsrc = 'images/Evil-Ryu-cropped.png'
-        }, 200)
       }
     }
+
+
+
+
+    if (this.movesList[ii] === 'attack') {
+
+      this.width = 100;
+      this.x - 3;
+      this.imgsrc = 'images/Evil-Ryu-cockback.png';
+
+      setTimeout(() => {
+
+        this.imgsrc = 'images/Evil-Ryu-punch.png'
+        this.width = 100;
+      }, 100)
+
+      setTimeout(() => {
+
+        if (this.x - this.width < theGame.player.x) {
+          this.x -= 5;
+          theGame.player.x -= 50;
+          theGame.player.imgsrc = 'images/Ryu-getting-hit.png'
+          theGame.energy--
+          punch.play()
+
+          if (theGame.energy === 0) {
+
+            gameOver.play()
+            stageMusic.pause()
+            alert('             GAME OVER!!!\n              EVIL RYU WINS!!!!!\n         YOU NEED TO WORK ON YOUR HADO \n press ok to train.');
+            theGame.drawEverything().newGame()
+          }
+
+          if (theGame.player.imgsrc = 'images/Ryu-getting-hit.png') {
+
+            setTimeout(() => {
+
+              theGame.player.imgsrc = 'images/Ryu_492.png'
+            }, 100)
+          }
+        }
+      }, 200)
+
+
+      setTimeout(() => {
+        this.imgsrc = 'images/Evil-Ryu-cropped.png'
+      }, 200)
+    }
   }
-
-
-
-
-
-
-// class Energy {
-//     constructor(){
-//         this.x = 45;
-//         this.y = 20;
-//         this.width = 40;
-//         this.height = 40;
-//         this.imgsrc = 'images/Ryu-weak-hadoken.png'
-//         this.ctx = document.getElementById('stage').getContext('2d')
-//     }
-    
-    
- 
-  
-
-//     draw() {
-//         let theImage = new Image();
-//         theImage.src = this.imgsrc;
-//         theImage.onload = () => {
-//           this.ctx.drawImage(theImage, this.x, this.y, this.width, this.height);
-       
- 
-            
-//         }
-//         return this;
-//       }
-// }
-
-// class Life extends Energy {
-//     super(){
-//         this.x = 48;
-//         this.y = 20;
-
-
-//         draw() {
-//             let theImage = new Image();
-//             theImage.src = this.imgsrc;
-//             theImage.onload = () => {
-//               this.ctx.drawImage(theImage, this.x, this.y, this.width, this.height);
-//             }
-//             return this;
-//           }
-//     }
-    
-// }
+}
 
 
 document.onkeydown = function (e) {
@@ -414,25 +334,13 @@ document.onkeydown = function (e) {
   if (!keyCommands.includes(e.key)) {
     keyCommands.push(e.key);
   }
-
-
-  // console.log(e.key)
-//   console.log(keyCommands)
-
 }
-
-
 
 document.onkeyup = function (e) {
   let theIndex = keyCommands.indexOf(e.key)
-//   console.log(theIndex)
+
   if (theIndex != -1) {
     keyCommands.splice(theIndex, 1)
   }
 
 }
-
-
-
-  
-  

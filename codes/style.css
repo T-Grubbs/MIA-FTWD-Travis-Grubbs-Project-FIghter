@@ -5,15 +5,11 @@
     
 }
 
-
-
 .game-header {
     background-image: url('./images/Ryu-background.jpg');
     
     padding: 0px 0px 0px 0px;
 }
-
-
 
 
 #start-button {
@@ -48,9 +44,6 @@
         width: 150px;
     }
 
-
-
-
 #stage {
     
     padding: 40px 100px 0 118px;
@@ -62,9 +55,6 @@
     height: 126vh;
     margin: 20px;
 }
-    
-
-
 
 h1 {
     padding-left: 300px;
@@ -72,9 +62,6 @@ h1 {
     text-decoration-color: gold;
     font-size: 50px
 }
-
-
-  
 
   canvas{
       
