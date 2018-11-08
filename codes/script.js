@@ -1,13 +1,20 @@
 let theGame;
 
 let keyCommands = []
+var fight = new Audio('fight.mp3')
+var newChallenger = new Audio('newChallenger.mp3')
+var stageMusic = new Audio('RyuStage.mp3')
+var ryuEnding = new Audio('RyuEnding.mp3')
+var gameOver = new Audio('gameover.mp3')
+var punch = new Audio('PUNCH.mp3')
 
 class Game {
   constructor() {
     this.ctx = document.getElementById('stage').getContext('2d');
     this.player = new Player()
     this.cpu = new Cpu()
-    this.energy = new Energy()
+    this.energy = 8;
+    this.cpuEnergy = 8;
     //this.life = new Life()
     this.player.move()
 
@@ -16,43 +23,72 @@ class Game {
 
 
     setInterval(() => {
-      this.ctx.clearRect(0, 0, 600, 750);
+   
       this.player.move();
       this.drawEverything();
+      this.player.collision();
+      this.cpu.collision();
 
-    }, 50)
+    }, 60)
   }
+       
 
   drawEverything() {
+    this.ctx.clearRect(0, 0, 800, 900);
+    setTimeout(()=>{
+
+        this.cpu.randomMove()
+    }, 1000)
+
+
     this.player.draw();
     this.cpu.draw();
-    this.cpu.randomMove()
-    this.energy.draw()
-    for(let k = 0; k <= 20; k++){
-        if(k % 2 === 0){
 
-            this.energy.draw().x += 4
-            
-        }
+    for(let k = 0; k < this.energy; k++){
+        
+
+        let theImage = new Image();
+        theImage.src = 'images/Ryu-weak-hadoken.png'
+        
+        theImage.onload = () => {
+          this.ctx.drawImage(theImage, k * 20, 20, 20, 20);
+        }     
+    
+
         
     }
-    //this.life.draw()
+    
+    for(let kk = 0; kk < this.cpuEnergy; kk++){
+        
+        let theImage = new Image();
+        theImage.src = 'images/Ryu-weak-hadoken.png'
+
+        theImage.onload = () => {
+          this.ctx.drawImage(theImage, kk * 20, 70, 20, 20);
+
+    }
 
 
     
   }
 }
 
-
+}
 
 document.getElementById("start-button").onclick = function () {
- 
-  theGame = new Game();
-  anotherPlayer = new Player();
-  anotherPlayer.draw();
-  spawnCpu = new Cpu();
-  spawnCpu.draw()
-
+    
+    setTimeout(()=>{
+        
+        fight.play()
+        stageMusic.play()
+        theGame = new Game();
+        anotherPlayer = new Player();
+        anotherPlayer.draw();
+        spawnCpu = new Cpu();
+        spawnCpu.draw()
+        
+    }, 1000)
+   
 };
 
 
@@ -60,12 +96,23 @@ class Player {
   constructor() {
     this.x = 45;
     this.y = 200;
-    this.width = 85;
+    this.width = 95;
     this.height = 255;
     this.imgsrc = 'images/Ryu_492.png'
     this.ctx = document.getElementById('stage').getContext('2d');
 
   }
+
+//   collision(){
+//     if (this.x > theGame.cpu.x) {
+//         alert("AHHH")
+//         this.x -= 100;
+//         theGame.cpu.x += 100;
+
+//       }
+//   }
+
+
 
   draw() {
       
@@ -78,30 +125,52 @@ class Player {
       keyCommands.push('attack')
       setTimeout(() => {
         this.imgsrc = 'images/Ryu-hadoken.png'
-        this.x += 1;
+        this.x += 4;
+        this.width =115;
         // this.width +=5;        
       }, 100)
       setTimeout(() => {
 
         if (this.x + this.width > theGame.cpu.x) {
           this.x -= 5;
+
+
+
           theGame.cpu.x += 50;
+
+
+
           theGame.cpu.imgsrc = 'images/Evil-Ryu-getting.png'
+          theGame.cpuEnergy--
+          punch.play()
+
           if(theGame.cpu.imgsrc = 'images/Evil-Ryu-getting.png'){
+
               setTimeout(()=>{
                   theGame.cpu.imgsrc = 'images/Evil-Ryu-cropped.png'
+
               }, 150)
           }
+          if(theGame.cpuEnergy === 0){
+              ryuEnding.play()
+              stageMusic.pause()
+              setTimeout(()=> {
+                  alert('   SHORYUKEN!!!!!!!')
 
-          //Method for cpu take damage here 
-          console.log('OW')
+              }, 500)
+            
+        }
+           
+        //   console.log('OW')
           //result = false;
         }
       }, 200)
       setTimeout(() => {
+
         this.imgsrc = 'images/Ryu_492.png'
         this.x -= 1;
         this.width = 85;
+
       }, 200)
 
 
@@ -119,9 +188,13 @@ class Player {
   move() {
 
     this.canMove(this.x, this.y)
+
     if (keyCommands.includes("ArrowLeft")) {
+
       if (this.canMove(this.x - 20, this.y)) {
-        console.log("SEE ME!?")
+
+       
+
         this.x -= 20;
       }
     }
@@ -129,13 +202,16 @@ class Player {
     if (keyCommands.includes("ArrowRight")) {
       if (this.canMove(this.x + 20, this.y)) {
         this.x += 20;
+        // console.log(this.x)
       }
     }
   }
 
   canMove(futureX, futureY) {
     let result = true;
-    if (futureX < 0 || futureX > 590 || futureY < 0 || futureY > 700) {
+
+    if (futureX < 0 || futureX > 790) {
+
       result = false;
     }
 
@@ -157,7 +233,7 @@ class Cpu {
     this.imgsrc = 'images/Evil-Ryu-cropped.png'
     this.ctx = document.getElementById('stage').getContext('2d');
 
-    this.movesList = ["moveRight", "moveLeft", "attack"]
+    this.movesList = ["moveLeft", "moveRight", "moveLeft", "attack"]
 
   }
 
@@ -166,7 +242,8 @@ class Cpu {
     let theImage = new Image();
     theImage.src = this.imgsrc;
     theImage.onload = () => {
-      this.ctx.drawImage(theImage, this.x, this.y, this.width, this.height);
+     newChallenger.play()   
+    this.ctx.drawImage(theImage, this.x, this.y, this.width, this.height);
     }
     return this;
   }
@@ -176,18 +253,27 @@ class Cpu {
 
   }
 
-  canMove(futureX, futureY) {
+  canMove(futureX) {
     let result = true;
-    if (futureX < 0 || futureX > 550) {
+    if (futureX < theGame.player.x || futureX > 800) {
+       // theGame.player.x += 50;
+
       result = false;
     }
 
-    if (futureX > theGame.player.x + theGame.player.width) {
-        this.x +50;
-        theGame.player.x -50;
+  
+
+  }
+
+  collision(){
+    //   console.log('=-=-=-=-=-=-',this.x)
+    //   console.log(theGame.player.x + theGame.player.width)
+    if (this.x < theGame.player.x + 75) {
+        // alert("AHHH")
+        this.x += 50;
+        theGame.player.x -= 50;
 
       }
-
   }
 
   randomMove() {
@@ -197,27 +283,31 @@ class Cpu {
     if (random === 2) {
 
       if (this.movesList[ii] === 'moveRight') {
-        this.x += 20;
-        console.log('Move Right')
+        //   console.log('Move Right')
+        //   console.log(this.x)
+          this.x += 20;
       }
+      if(this.x > 450){
+          this.x -92;
+      }
+
+
       if (this.movesList[ii] === 'moveLeft') {
-        console.log('Move Left')
+        // console.log('Move Left')
+        // console.log(this.x)
         this.x -= 20;
 
-
-        if (this.x  < theGame.player.x + theGame.player.width) {
-            this.x + 50;
-            theGame.x - 50;
         }
 
       }
 
 
       if (this.movesList[ii] === 'attack') {
-        console.log('Attack')
+        // console.log('Attack')
         this.width = 100;
         this.x -3;
         this.imgsrc = 'images/Evil-Ryu-cockback.png';
+        
 
 
 
@@ -226,7 +316,8 @@ class Cpu {
 
         setTimeout(() => {
           this.imgsrc = 'images/Evil-Ryu-punch.png'
-        }, 150)
+          this.width = 100;
+        }, 100)
 
 
         setTimeout(() => {
@@ -235,6 +326,14 @@ class Cpu {
             this.x -= 5;
             theGame.player.x -= 50;
             theGame.player.imgsrc = 'images/Ryu-getting-hit.png'
+            theGame.energy--
+            punch.play()
+            if(theGame.energy === 0){
+                gameOver.play()
+                stageMusic.pause()
+                alert('             GAME OVER!!!\n              EVIL RYU WINS!!!!!\n         YOU NEED TO WORK ON YOUR HADO \n press ok to train.');
+                theGame.drawEverything().newGame()
+            }
 
            
             if (theGame.player.imgsrc = 'images/Ryu-getting-hit.png') {
@@ -255,36 +354,36 @@ class Cpu {
   }
 
 
-}
 
 
 
-class Energy {
-    constructor(){
-        this.x = 45;
-        this.y = 20;
-        this.width = 40;
-        this.height = 40;
-        this.imgsrc = 'images/Ryu-weak-hadoken.png'
-        this.ctx = document.getElementById('stage').getContext('2d')
-    }
+
+// class Energy {
+//     constructor(){
+//         this.x = 45;
+//         this.y = 20;
+//         this.width = 40;
+//         this.height = 40;
+//         this.imgsrc = 'images/Ryu-weak-hadoken.png'
+//         this.ctx = document.getElementById('stage').getContext('2d')
+//     }
     
     
  
   
 
-    draw() {
-        let theImage = new Image();
-        theImage.src = this.imgsrc;
-        theImage.onload = () => {
-          this.ctx.drawImage(theImage, this.x, this.y, this.width, this.height);
+//     draw() {
+//         let theImage = new Image();
+//         theImage.src = this.imgsrc;
+//         theImage.onload = () => {
+//           this.ctx.drawImage(theImage, this.x, this.y, this.width, this.height);
        
  
             
-        }
-        return this;
-      }
-}
+//         }
+//         return this;
+//       }
+// }
 
 // class Life extends Energy {
 //     super(){
@@ -318,7 +417,7 @@ document.onkeydown = function (e) {
 
 
   // console.log(e.key)
-  console.log(keyCommands)
+//   console.log(keyCommands)
 
 }
 
@@ -326,7 +425,7 @@ document.onkeydown = function (e) {
 
 document.onkeyup = function (e) {
   let theIndex = keyCommands.indexOf(e.key)
-  console.log(theIndex)
+//   console.log(theIndex)
   if (theIndex != -1) {
     keyCommands.splice(theIndex, 1)
   }
