@@ -191,6 +191,15 @@ class Player {
 
       }
     }
+    if (keyCommands.includes("ArrowUp")){
+if (this.canMove(this.y + 40, this.x)){
+    this.y +=40
+    setTimeout(()=>{
+      this.y -=40
+    }, 500)
+    
+}
+    }
   }
 
   canMove(futureX) {
@@ -222,7 +231,7 @@ class Cpu {
     let theImage = new Image();
     theImage.src = this.imgsrc;
     theImage.onload = () => {
-      newChallenger.play()
+     
       this.ctx.drawImage(theImage, this.x, this.y, this.width, this.height);
     }
     return this;
