@@ -191,15 +191,15 @@ class Player {
 
       }
     }
-    if (keyCommands.includes("ArrowUp")){
-if (this.canMove(this.y + 40, this.x)){
-    this.y +=40
-    setTimeout(()=>{
-      this.y -=40
-    }, 500)
+//     if (keyCommands.includes("ArrowUp")){
+// if (this.canMove(this.y -130, this.x)){
+//     this.y -=130
+//     setTimeout(()=>{
+//       this.y +=130
+//     }, 500)
     
-}
-    }
+// }
+//     }
   }
 
   canMove(futureX) {
