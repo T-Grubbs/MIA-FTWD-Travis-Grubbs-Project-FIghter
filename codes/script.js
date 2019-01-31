@@ -141,15 +141,7 @@ class Player {
 				this.x += 20;
 			}
 		}
-		//     if (keyCommands.includes("ArrowUp")){
-		// if (this.canMove(this.y -130, this.x)){
-		//     this.y -=130
-		//     setTimeout(()=>{
-		//       this.y +=130
-		//     }, 500)
-
-		// }
-		//     }
+	
 	}
 
 	canMove(futureX) {
