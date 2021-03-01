@@ -141,6 +141,12 @@ class Player {
 				this.x += 20;
 			}
 		}
+
+		if (keyCommands.includes('ArrowUp')) {
+			if (this.canMove(this.y + 20, this.x)) {
+				this.y += 25;
+			}
+		}
 	
 	}
 
