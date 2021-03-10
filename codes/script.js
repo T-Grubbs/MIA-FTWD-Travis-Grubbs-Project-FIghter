@@ -142,9 +142,10 @@ class Player {
 			}
 		}
 
-		if (keyCommands.includes('ArrowUp')) {
-			if (this.canMove(this.y + 20, this.x)) {
-				this.y += 25;
+		if (keyCommands.includes('ArrowDown')) {
+			if (this.canMove(this.y - 10, this.x)) {
+				this.y += 10;
+				this.imgsrc = 'images/Ryu_crouching.png';
 			}
 		}
 	
